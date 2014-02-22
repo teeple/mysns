@@ -389,7 +389,7 @@ function commons_bw_generate_group_widget($group = NULL) {
 
   // Generate the Quicktabs instance.
 	// bhtak 2014/02/21 add group id to distinguish by each group
-  return quicktabs_build_quicktabs('commons_bw-' . ($group ? $group->nid : 0) , $settings, $tabs);
+  return quicktabs_build_quicktabs('commons_bw', $settings, $tabs);
 }
 
 /**
