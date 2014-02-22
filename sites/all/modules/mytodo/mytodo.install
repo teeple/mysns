@@ -1,0 +1,103 @@
+<?php
+/**
+ * @file
+ * Install and uninstall functions for the MyToDO module.
+ */
+
+/**
+ * Implements hook_schema().
+function mytodo_schema() {
+  $schema['mytodo_list'] = array(
+    'description' => 'My ToDo List',
+    'fields' => array(
+      'id' => array(
+        'description' => 'ToDo item ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'ToDo item name',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ),
+      'description' => array(
+        'description' => 'ToDo description',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ),
+      'reporter' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The users uid of the user who created the todo .',
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
+  );
+
+  return $schema;
+}
+ */
+
+/**
+ * Implements hook_install().
+ */
+function mytodo_install() {
+	// Create the default webform type.
+	$mytodo_type = array(
+		'type' => 'mytodo',
+		'name' => t('My ToDo'),
+		'base' => 'node_content',
+		'description' => t('Create a new ToDo item.'),
+		'custom' => TRUE,
+		'modified' => TRUE,
+		'locked' => FALSE,
+	);
+
+	$mytodo_type = node_type_set_defaults($mytodo_type);
+	node_type_save($mytodo_type);
+	node_add_body_field($mytodo_type);
+//dpm('My ToDo content type created');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function mytodo_uninstall() {
+//  drupal_uninstall_schema('mytodo_accounts');
+	// TODO : need to check
+}
+
+/**
+ * Implements hook_requirements().
+function mytodo_requirements($phase) {
+}
+ */
+
+/**
+ * Add the mytodo_accounts.uid field.
+ */
+function mytodo_update_7002() {
+/*
+  $field = array(
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'The {users}.uid of the user who created the redirect.',
+  );
+  db_add_field('mytodo_accounts', 'reporter', $field);
+
+  db_update('mytodo_accounts')
+    ->fields(array('reporter' => 1))
+    ->execute();
+*/
+}

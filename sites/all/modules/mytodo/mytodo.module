@@ -1,0 +1,148 @@
+<?php
+/**
+ * @file
+ * ToDo API for Drupal
+ */
+
+include_once dirname(__FILE__) . '/mytodo.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function mytodo_menu() {
+  $items = array();
+  $items['admin/config/services/mytodo_account'] = array(
+    'title' => 'Google Account Settings',
+    'description' => 'Google Account settings.',
+    'page callback' => 'mytodo_account_list',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'gauth.admin.inc',
+  );
+  $items['admin/config/services/mytodo_account/add'] = array(
+    'title' => 'Add Account',
+    'description' => 'Google Account Add.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mytodo_account_edit_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'gauth.admin.inc',
+  );
+  $items['admin/config/services/mytodo_account/edit/%'] = array(
+    'title' => 'Google Account Edit',
+    'description' => 'Google Account Edit.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mytodo_account_edit_form', 5),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'gauth.admin.inc',
+  );
+  $items['admin/config/services/mytodo_account/delete/%'] = array(
+    'title' => 'Google Account Delete',
+    'description' => 'Google Account delete.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mytodo_account_delete_form', 5),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'gauth.admin.inc',
+  );
+  $items['gauth/response_handler'] = array(
+    'page callback' => 'mytodo_response_handler',
+    'access callback' => TRUE,
+  );
+  $items['gauth/revoke_token/%'] = array(
+    'title' => 'Google Account Token Revoke',
+    'description' => 'Revoke a access token.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mytodo_account_token_revoke_form', 2),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'gauth.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function mytodo_theme() {
+  return array(
+    // Theme functions in gauth.admin.inc.
+    'mytodo_account_list' => array(
+      'variables' => array('accounts' => NULL),
+    ),
+  );
+}
+
+
+/**
+  * Implements hook_node_info().
+  */
+function mytodo_node_info() {
+	return array(
+		'mytodo' => array(
+			'name' => t('My ToDo'),
+			'module' => 'mytodo',
+			'description' => "Manage ToDo List",
+			)
+	);
+}
+
+/* 
+* Implementation of hook_perm().
+*/
+function mytodo_perm() {
+	return array('create mytodo', 'edit own mytodo');
+} 
+
+/**
+  * Implementation of hook_access().
+  */
+function mytodo_access($op, $node) {
+	global $user;
+	if ($op == 'create') {
+		// Only users with permission to do so may create this node type.
+		return user_access('create mytodo');
+	}
+	// Users who create a node may edit or delete it later, assuming they have the
+	// necessary permissions.
+	if ($op == 'update' || $op == 'delete') {
+		if (user_access('edit own mytodo') && ($user->uid == $node->uid)) {
+			return TRUE;
+		}
+	}
+} 
+
+/**
+  * Implementation of hook_form().
+  */
+function mytodo_form(&$node, $form_state) {
+	$type = node_get_types('type', $node);
+	// We need to define form elements for the node's title and body.
+	$form['title'] = array(
+		'#type' => 'textfield',
+		'#title' => check_plain($type->title_label),
+		'#required' => TRUE,
+		'#default_value' => $node->title,
+		'#weight' => -5
+	);
+	// We want the body and filter elements to be adjacent. We could try doing
+	// this by setting their weights, but another module might add elements to the
+	// form with the same weights and end up between ours. By putting them into a
+	// sub-array together, we're able force them to be rendered together.
+	$form['body_filter']['body'] = array(
+		'#type' => 'textarea',
+		'#title' => check_plain($type->body_label),
+		'#default_value' => $node->body,
+		'#required' => FALSE
+	);
+	$form['body_filter']['filter'] = filter_form($node->format);
+	// NOTE in node_example there is some addition code here not needed for this simple node-type
+	return $form;
+}
+/**
+  * Implementation of hook_help().
+  */
+function mytodo_help($path, $arg) {
+	switch ($path) {
+	case 'admin/help#mytodo':
+		return '<p>' . t('ADMIN-HELP-TEXT') . '</p>';
+		break;
+	}
+}

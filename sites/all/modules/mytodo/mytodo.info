@@ -1,0 +1,20 @@
+name = My ToDo
+description = "ToDo module - manage todo list"
+core = 7.x
+version = 0.1
+package = My ToDo
+stylesheets[all][] = css/mytodo.css
+features[node][] = mytodo
+features[og_features_permission][] = node:group:create mytodo content
+features[og_features_permission][] = node:group:delete any mytodo content
+features[og_features_permission][] = node:group:delete own mytodo content
+features[og_features_permission][] = node:group:update any mytodo content
+features[og_features_permission][] = node:group:update own mytodo content
+features[user_permission][] = create mytodo content
+features[user_permission][] = delete any mytodo content
+features[user_permission][] = delete own mytodo content
+features[user_permission][] = edit any mytodo content
+features[user_permission][] = edit own mytodo content
+
+; Information added by drupal.org packaging script on 2013-09-08
+

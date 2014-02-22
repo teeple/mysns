@@ -41,12 +41,16 @@ class commons_bw_handler_node_partial_form extends views_handler_area {
     // Avoid rendering a form for the same bundle twice; Instead, mark that it
     // should be moved to this position from previously rendered form.
     // See partial_node_form.js.
+		/*
     if (!empty($cache[$bundle])) {
-      return '<div class="partial-node-form-placeholder" data-bundle="' . $bundle . '"></div>';
+//      return '<div class="partial-node-form-placeholder" data-bundle="' . $bundle . '"></div>';
+			// bhtak 2014/02/21 return cached form
+			return $cache[$bundle];
     }
-    $cache[$bundle] = TRUE;
+		*/
 
     $form = drupal_get_form("commons_bw_partial_node_form__$bundle", $bundle, $group_id);
-    return render($form);
+    $cache[$bundle] = render($form);
+    return $cache[$bundle];
   }
 }
