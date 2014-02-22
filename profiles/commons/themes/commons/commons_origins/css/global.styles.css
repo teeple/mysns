@@ -97,6 +97,7 @@ body {
   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
   color: #333333;
   min-width: 18em;
+	background-color: #333;	/* bhtak */
 }
 
 /* =============================================================================
@@ -174,7 +175,7 @@ var {
   white-space: nowrap;
 }
 #header a {
-  color: white;
+  color: #333;	/* bhtak 2014/02/22 */
 }
 @media only screen and (max-width: 768px) {
   #header {
@@ -183,11 +184,25 @@ var {
 }
 
 .header-color-row-one {
+	/* bhtak 2014/02/22
   border-top: 1.5em solid black;
   background-color: #336699;
   -webkit-box-shadow: #336699 0px -1px 0px;
   -moz-box-shadow: #336699 0px -1px 0px;
   box-shadow: #336699 0px -1px 0px;
+	*/
+  display: block;
+  height: 55px;
+  position: relative;
+  margin: 0;
+  padding: 0 13px 0 0;
+  background-color: #f3f3f3;
+  background-image: -moz-linear-gradient(top, #f3f3f3, #e2e2e2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f3f3f3), to(#e2e2e2));
+  background-image: -webkit-linear-gradient(top, #f3f3f3, #e2e2e2);
+  background-image: -o-linear-gradient(top, #f3f3f3, #e2e2e2);
+  background-image: linear-gradient(to bottom, #f3f3f3, #e2e2e2);
+  background-repeat: repeat-x;
 }
 @media only screen and (min-width: 769px) {
   .header-color-row-one {
@@ -197,11 +212,18 @@ var {
 
 .header-color-row-two {
   position: relative;
+	/* bhtak 2014/02/22
   background-color: #2783b9;
   min-height: 2.5em;
   border-top: 1px solid #3d9dd6;
   border-bottom: 1px solid #1e658f;
+	*/
+  background-color: #474544;
+  min-height: 1.0em;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
   z-index: 2;
+	display:hidden;
 }
 
 /**
@@ -1810,7 +1832,9 @@ h1.node-title a:hover {
  */
 .block-content ul,
 .block-content ol {
+	/* bhtak 2014/02/22
   padding: 0 0 0 15px;
+	*/
 }
 .block-content li {
   margin: 0;
