@@ -156,7 +156,6 @@ function mytodo_form_commons_bw_partial_node_form_after_build($form) {
 	$form['body'][$language][0]['format']['#access'] = FALSE;
 	$form['body'][$language][0]['value']['#rows'] = 3;
 
-	dpm( $form, 'mytodo');
 	return $form;
 }
 
